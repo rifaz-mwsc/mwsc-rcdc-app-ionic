@@ -25,9 +25,71 @@
         </li>
       </ul>
     </div>
+ <ion-card *ngIf="!loading && balanceData">
+    <ion-card-header>
+      <ion-card-title>{{ balanceData.customerName }}</ion-card-title>
+      <ion-card-subtitle>Account No: {{ balanceData.contractAccountNo }}</ion-card-subtitle>
+    </ion-card-header>
 
+    <ion-card-content>
+      <ion-item>
+        <ion-label>Balance</ion-label>
+        <ion-badge color="danger">{{ balanceData.balance | number:'1.2-2' }}</ion-badge>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Due</ion-label>
+        <ion-badge color="warning">{{ balanceData.due | number:'1.2-2' }}</ion-badge>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>SAP Balance</ion-label>
+        <ion-badge color="primary">{{ balanceData.sapBalance | number:'1.2-2' }}</ion-badge>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>SAP Due</ion-label>
+        <ion-badge color="medium">{{ balanceData.sapDue | number:'1.2-2' }}</ion-badge>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Due Bills</ion-label>
+        <ion-badge>{{ balanceData.noOfDueBills }}</ion-badge>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Smart Meter</ion-label>
+        <ion-badge [color]="balanceData.isSmartMeter ? 'success' : 'medium'">
+          {{ balanceData.isSmartMeter ? 'Yes' : 'No' }}
+        </ion-badge>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
     <!-- Action buttons -->
-    <ion-button expand="full" color="primary" (click)="markAsRead()">Mark as Read</ion-button>
+       <!-- Completed Badge -->
+  <ion-card *ngIf="disconnection?.isCompleted">
+    <ion-card-content>
+      <ion-badge color="success" class="ion-padding">
+        ✅ Completed on {{ disconnection.completedOn | date:'medium' }}
+      </ion-badge>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Complete Button -->
+  <ion-button 
+    expand="block" 
+    color="primary"
+    (click)="confirmComplete()"
+    *ngIf="!disconnection?.isCompleted">
+    Mark as Complete
+  </ion-button>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" style="text-align:center; margin-top:20px;">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Processing...</p>
+  </div>
+    <ion-button expand="full" color="primary" (click)="loadBalance()">Load Balance</ion-button>
     <ion-button expand="full" color="danger" (click)="disconnect()">Disconnect</ion-button>
     <ion-button expand="full" color="secondary" (click)="addRemark()">Add Remark</ion-button>
   </div>

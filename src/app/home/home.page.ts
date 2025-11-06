@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone: true,
-  imports: [IonicModule,AppHeaderComponent],
+  imports: [IonicModule],
 })
 export class HomePage implements OnInit {
 

@@ -2,8 +2,18 @@
 <app-header></app-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
+  <div *ngIf="loading" class="ion-padding ion-text-center">
+  <ion-spinner name="crescent"></ion-spinner>
+  <p>Loading disconnections...</p>
+</div>
+<ion-searchbar
+  [(ngModel)]="searchTerm"
+  (ionInput)="filterData()"
+  placeholder="Search disconnections...">
+</ion-searchbar>
 
-<ion-segment [(ngModel)]="segmentValue">
+
+<ion-segment *ngIf="!loading" [(ngModel)]="segmentValue" (ionChange)="filterData()">
   <ion-segment-button value="first">
     <ion-label>All</ion-label>
   </ion-segment-button>
@@ -15,6 +25,7 @@
   </ion-segment-button>
 </ion-segment>
 
+
 <div [ngSwitch]="segmentValue">
   <div *ngSwitchCase="'first'">
     
@@ -24,13 +35,13 @@
   </div>
 
   <!-- List of disconnections -->
-  <ion-list *ngIf="disconnections.length > 0">
-    <ion-item *ngFor="let item of disconnections" [routerLink]="['/disconnection-detail', item.disconnectionNo]">
+  <ion-list *ngIf="filteredList.length > 0">
+    <ion-item *ngFor="let item of filteredList" [routerLink]="['/disconnection-detail', item.disconnectionNo]">
       <ion-label>
         <h2>{{ item.contract.contractAccount.businessPartner.name || 'N/A' }}</h2>
         <p>Meter: {{ item.contract.meter.id }}</p>
         <p>Disconnection No: {{ item.disconnectionNo }}</p>
-        <p>Status: {{ item.isDisconnected ? 'Disconnected' : 'Active' }}</p>
+        <p>Status: {{ item.sapStatus }}</p>
         <p>Tariff Group: {{ item.tarifGroup }}</p>
 
         <!-- Optional: show remarks if any -->

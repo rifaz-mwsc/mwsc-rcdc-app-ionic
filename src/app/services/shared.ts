@@ -119,20 +119,21 @@ export class Shared {
   //   return null; // nothing found
   // }
    // Update a single disconnection by disconnectionNo
-  updateDisconnection(updatedItem: any) {
+  async updateDisconnection(updatedItem: any) {
     const current = this.disconnectionSubject.value;
     const index = current.findIndex(i => i.disconnectionNo === updatedItem.disconnectionNo);
     if (index !== -1) {
       current[index] = updatedItem;
       this.disconnectionSubject.next([...current]); // emit updated array
       // Update Preferences
-      Preferences.set({
+      await Preferences.set({
         key: 'disconnectionList',
         value: JSON.stringify({ totalCount: current.length, items: current, isSuccessful: true })
       });
+      console.log('Disconnection updated in cache:', updatedItem);
     }
   }
-    updateReconnection(updatedItem: any) {
+    async updateReconnection(updatedItem: any) {
       console.log('Updating reconnection with data:', updatedItem);
     const current = this.reconnectionSubject.value;
     const index = current.findIndex(i => i.disconnectionNo === updatedItem.disconnectionNo);
@@ -140,7 +141,7 @@ export class Shared {
       current[index] = updatedItem;
       this.reconnectionSubject.next([...current]); // emit updated array
       // Update Preferences
-      Preferences.set({
+     await Preferences.set({
         key: 'reconnectionList',
         value: JSON.stringify({ totalCount: current.length, items: current, isSuccessful: true })
       });

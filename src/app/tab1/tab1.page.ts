@@ -30,6 +30,8 @@ export class Tab1Page {
   disconnections: any[] = [];
   reconnections: any[] = [];
   totalDisconnections: number = 0;
+  totalCompletedDisconnections: number = 0;
+  totalPendingDisconnections: number = 0;
   totalReconnections: number = 0;
   user: any = null;
   private discSub!: Subscription;
@@ -69,6 +71,8 @@ export class Tab1Page {
     // Subscribe to shared data
     this.discSub = this.shared.disconnection$.subscribe(list => {
       this.disconnections = list;
+      this.totalCompletedDisconnections = list.filter(d => d.sapStatus === 'COMP').length;
+      this.totalPendingDisconnections = list.filter(d => d.sapStatus === 'DCPRO').length;
       this.totalDisconnections = list.length;
     });
       // Subscribe to reconnections

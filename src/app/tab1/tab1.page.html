@@ -37,15 +37,14 @@
     <ion-item [button]="true">
       <ion-icon color="tertiary" slot="start" name="list-circle" size="large"></ion-icon>
       <ion-label>Pending</ion-label>
-      <ion-note slot="end">{{totalDisconnections}}</ion-note>
+      <ion-note slot="end">{{totalPendingDisconnections}}</ion-note>
     </ion-item>
     <ion-item [button]="true">
       <ion-icon color="success" slot="start" name="list-circle" size="large"></ion-icon>
       <ion-label>Completed</ion-label>
-      <ion-note slot="end">{{totalDisconnections}}</ion-note>
+      <ion-note slot="end">{{totalCompletedDisconnections}}</ion-note>
     </ion-item>
   </ion-list>
-  <ion-card-content *ngIf="totalDisconnections"> {{totalDisconnections}} </ion-card-content>
 </ion-card>
 
 

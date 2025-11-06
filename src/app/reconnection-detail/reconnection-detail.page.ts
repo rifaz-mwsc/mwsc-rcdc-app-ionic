@@ -5,7 +5,8 @@ import { IonicModule } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Shared } from '../services/shared';
 import { Subscription } from 'rxjs';
-import { IonHeader } from "@ionic/angular/standalone";`
+import { IonHeader } from "@ionic/angular/standalone";import { ApiService } from '../services/api';
+`
 `
 
 @Component({
@@ -21,10 +22,15 @@ import { IonHeader } from "@ionic/angular/standalone";`
 export class ReconnectionDetailPage implements OnInit {
   reconnection: any = null;
   private sub!: Subscription;
+  loading: boolean = false;
+  balanceData: any = null;
 
-  constructor(private route: ActivatedRoute, private router: Router, private shared: Shared) { }
+  constructor(private route: ActivatedRoute,
+     private router: Router,
+     private api: ApiService,
+     private shared: Shared) { }
 
-  ngOnInit() {
+  async ngOnInit() {
   }
   async ionViewWillEnter() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -34,6 +40,20 @@ export class ReconnectionDetailPage implements OnInit {
       this.reconnection = list.find(i => i.disconnectionNo.toString() === id);
     });
   }
+  async loadBalance() {
+     this.loading = true;
+       try {
+      this.balanceData = await this.api.getCustomerBalance(this.reconnection?.contract.id);
+      console.log('Balance Data:', this.balanceData);
+    } catch (err) {
+      console.error('Balance fetch failed', err);
+    }
+
+    this.loading = false;
+  
+     
+
+}
 
   ionViewWillLeave() {
     this.sub.unsubscribe();
@@ -48,6 +68,7 @@ export class ReconnectionDetailPage implements OnInit {
     console.log('Reconnecting with data:', updated);
     this.shared.updateReconnection(updated);
   }
+
     markAsRead() {
     if (!this.reconnection) return;
     const updated = {

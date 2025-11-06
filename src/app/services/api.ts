@@ -30,6 +30,16 @@ async showToast(message: string) {
   });
   toast.present();
 }
+  async presentToast(message: string, color: string) {
+    const toast = await this.toastController.create({
+      message,
+      color,
+      duration: 1800,
+      position: 'bottom'
+    });
+    toast.present();
+  }
+
 
  async get(path: string) {
   let token = await this.getToken();
@@ -70,5 +80,62 @@ async showToast(message: string) {
     }
   }
 }
+async getCustomerBalance(accountNo: number) {
+  const token = await this.getToken();
+
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  });
+
+  const url = `${this.baseUrl}/get-customer-balance?accountNo=${accountNo}`;
+
+  try {
+    return await firstValueFrom(
+      this.http.get(url, { headers })
+    );
+  } catch (error: any) {
+    // Token expired? Try refresh
+    if (error.status === 401) {
+      await this.auth.refreshToken();
+
+      const newToken = await this.getToken();
+      const retryHeaders = new HttpHeaders({
+        'Authorization': `Bearer ${newToken}`
+      });
+
+      return await firstValueFrom(
+        this.http.get(url, { headers: retryHeaders })
+      );
+    }
+
+    throw error;
+  }
+}
+
+async markDisconnectionComplete(disconnectionNo: number): Promise<boolean> {
+  const token = await this.getToken();
+
+  const headers = new HttpHeaders({
+    "Authorization": `Bearer ${token}`,
+    "Content-Type": "application/json"
+  });
+
+  const url = `${this.baseUrl}/disconnection-order/complete?disconnectionNo=${disconnectionNo}`;
+
+  try {
+    const result = await firstValueFrom(this.http.post(url, {}, { headers }));
+    return result === true; // ✅ API returns true on success
+  } catch (err) {
+    console.error("Complete Error:", err);
+    this.toastController.create({
+      message: 'Failed to mark disconnection as complete.',
+      duration: 2000,
+      color: 'danger'
+    }).then(toast => toast.present());
+    throw err;
+  }
+}
+
 
 }
