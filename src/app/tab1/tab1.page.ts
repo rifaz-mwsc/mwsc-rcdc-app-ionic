@@ -16,16 +16,6 @@ import { Shared } from '../services/shared';
 import { AppHeaderComponent } from '../components/app-header/app-header.component';
 import { Subscription } from 'rxjs';
 import { Auth } from '../services/auth';
-import {
-  
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonNote,
-  IonText
-} from '@ionic/angular/standalone';
-
 import { addIcons } from 'ionicons';
 import { chevronForward, listCircle } from 'ionicons/icons';
 
@@ -48,6 +38,7 @@ export class Tab1Page {
     handleRefresh(event: RefresherCustomEvent) {
     setTimeout(() => {
       this.loadDisconnections();
+      this.loadReconnections();
       event.target.complete();
     }, 2000);
   }
@@ -84,7 +75,6 @@ export class Tab1Page {
     this.reconSub = this.shared.reconnection$.subscribe(list => {
       this.reconnections = list;
       this.totalReconnections = list.length;
-      console.log('Reconnections updated:', list);
     });
 
 

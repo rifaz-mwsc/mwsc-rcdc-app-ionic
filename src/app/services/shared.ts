@@ -132,6 +132,20 @@ export class Shared {
       });
     }
   }
+    updateReconnection(updatedItem: any) {
+      console.log('Updating reconnection with data:', updatedItem);
+    const current = this.reconnectionSubject.value;
+    const index = current.findIndex(i => i.disconnectionNo === updatedItem.disconnectionNo);
+    if (index !== -1) {
+      current[index] = updatedItem;
+      this.reconnectionSubject.next([...current]); // emit updated array
+      // Update Preferences
+      Preferences.set({
+        key: 'reconnectionList',
+        value: JSON.stringify({ totalCount: current.length, items: current, isSuccessful: true })
+      });
+    }
+  }
 
   // -------------------------------
   // Clear cache (memory + Preferences)
@@ -140,6 +154,14 @@ export class Shared {
     this.disconnectionList = null;
     try {
       await Preferences.remove({ key: 'disconnectionList' });
+    } catch (err) {
+      console.error('Failed to clear cached data', err);
+    }
+  }
+   async clearReconnectionList() {
+    this.reconnectionList = null;
+    try {
+      await Preferences.remove({ key: 'reconnectionList' });
     } catch (err) {
       console.error('Failed to clear cached data', err);
     }

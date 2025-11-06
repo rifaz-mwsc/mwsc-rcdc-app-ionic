@@ -3,8 +3,6 @@ import { Component } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Shared } from '../services/shared';
-import { IonLabel, IonSegment, IonSegmentButton } from '@ionic/angular/standalone';
-import { IonSegmentContent, IonSegmentView } from '@ionic/angular/standalone';
 import { AppHeaderComponent } from '../components/app-header/app-header.component';
 import { RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';

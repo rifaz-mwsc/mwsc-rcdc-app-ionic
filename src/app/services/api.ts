@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Preferences } from '@capacitor/preferences';
 import { firstValueFrom } from 'rxjs';
 import { ToastController } from '@ionic/angular';
+import { Auth } from './auth';
 
 @Injectable({
   providedIn: 'root'
@@ -11,16 +12,16 @@ export class ApiService {
 
   private baseUrl = 'https://rcdc-api-uat-01.mwsc.com.mv/v1';
 
-  constructor(private http: HttpClient, private toastController: ToastController) {}
+  constructor(private http: HttpClient, private toastController: ToastController, private auth: Auth) {}
 
   async getToken(): Promise<string | null> {
     const stored = await Preferences.get({ key: 'accessToken' });
     return stored.value;
   }
-    async getRefreshToken(): Promise<string | null> {
-    const token = await Preferences.get({ key: 'refreshToken' });
-    return token.value;
-  }
+  //   async getRefreshToken(): Promise<string | null> {
+  //   const token = await Preferences.get({ key: 'refreshToken' });
+  //   return token.value;
+  // }
 async showToast(message: string) {
   const toast = await this.toastController.create({
     message,
@@ -40,13 +41,14 @@ async showToast(message: string) {
 
   try {
     return await firstValueFrom(this.http.get(`${this.baseUrl}/${path}`, { headers }));
+    
   } catch (error: any) {
     // Check if error is 401 → token expired
     if (error.status === 401) {
       console.warn('Token expired, refreshing...');
 
       try {
-        await this.getRefreshToken(); // refresh tokens
+        await this.auth.refreshToken(); // refresh tokens
         token = await this.getToken(); // get updated token
 
         // Retry original request with new token

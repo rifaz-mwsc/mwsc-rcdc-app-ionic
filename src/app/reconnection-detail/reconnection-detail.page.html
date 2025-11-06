@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Reconnection Detail</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <div *ngIf="reconnection">
+    <h2>{{ reconnection.contract.contractAccount.businessPartner.name }}</h2>
+    <p><strong>Meter ID:</strong> {{ reconnection.contract.meter.id }}</p>
+    <p><strong>Disconnection No:</strong> {{ reconnection.disconnectionNo }}</p>
+    <p><strong>Status:</strong> {{ reconnection.isDisconnected ? 'Disconnected' : 'Active' }}</p>
+    <p><strong>Tariff Group:</strong> {{ reconnection.tarifGroup }}</p>
+    <p><strong>Reason:</strong> {{ reconnection.reason }}</p>
+    <p><strong>Reconnected On:</strong> {{ reconnection.reconnectedOn | date:'short' }}</p>
+
+    <div *ngIf="reconnection.remarks?.length">
+      <strong>Remarks:</strong>
+      <ul>
+        <li *ngFor="let r of reconnection.remarks">
+          {{ r.remark }} - {{ r.createdBy }} ({{ r.createdOn | date:'short' }})
+        </li>
+      </ul>
+    </div>
+
+    <!-- Action buttons -->
+    <ion-button expand="full" color="primary" (click)="markAsRead()">Mark as Read</ion-button>
+    <ion-button expand="full" color="danger" (click)="reconnect()">Reconnect</ion-button>
+    <ion-button expand="full" color="secondary" (click)="addRemark()">Add Remark</ion-button>
+  </div>
+
+  <div *ngIf="!reconnection" class="ion-text-center">
+    Reconnection not found.
+  </div>
+
+</ion-content>

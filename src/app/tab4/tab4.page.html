@@ -1,10 +1,53 @@
+
 <app-header></app-header>
 
+<ion-content [fullscreen]="true" class="ion-padding">
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">tab4</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-segment [(ngModel)]="segmentValue">
+  <ion-segment-button value="first">
+    <ion-label>All</ion-label>
+  </ion-segment-button>
+  <ion-segment-button value="second">
+    <ion-label>Pending</ion-label>
+  </ion-segment-button>
+  <ion-segment-button value="third">
+    <ion-label>Completed</ion-label>
+  </ion-segment-button>
+</ion-segment>
+
+<div [ngSwitch]="segmentValue">
+  <div *ngSwitchCase="'first'">
+    
+  <!-- Show a message if no data -->
+  <div *ngIf="reconnections.length === 0" class="ion-text-center ion-padding">
+    No disconnections available.
+  </div>
+
+  <!-- List of reconnections -->
+  <ion-list *ngIf="reconnections.length > 0">
+    <ion-item *ngFor="let item of reconnections" [routerLink]="['/reconnection-detail', item.disconnectionNo]">
+      <ion-label>
+        <h2>{{ item.contract.contractAccount.businessPartner.name || 'N/A' }}</h2>
+        <p>Meter: {{ item.contract.meter.id }}</p>
+        <p>Disconnection No: {{ item.disconnectionNo }}</p>
+        <p>Status: {{ item.isDisconnected ? 'Disconnected' : 'Active' }}</p>
+        <p>Tariff Group: {{ item.tarifGroup }}</p>
+
+        <!-- Optional: show remarks if any -->
+        <div *ngIf="item.remarks?.length">
+          <strong>Remarks:</strong>
+          <ul>
+            <li *ngFor="let r of item.remarks">
+              {{ r.remark }} - {{ r.createdBy }} ({{ r.createdOn | date:'short' }})
+            </li>
+          </ul>
+        </div>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  </div>
+  <div *ngSwitchCase="'second'">Pending content</div>
+  <div *ngSwitchCase="'third'">Completed content</div>
+</div>
+
 </ion-content>

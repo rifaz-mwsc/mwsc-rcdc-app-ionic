@@ -16,10 +16,35 @@ import { ApiService } from '../services/api';
     imports: [IonicModule, CommonModule, FormsModule, AppHeaderComponent,RouterModule],
 })
 export class Tab4Page implements OnInit {
+    reconnections: any[] = [];
+    segmentValue = 'first'; 
+    private sub!: Subscription;
 
-  constructor() { }
+  constructor(private shared: Shared, private api: ApiService) { }
 
   ngOnInit() {
+  }
+   async ionViewWillEnter() {
+    // Subscribe to shared data
+    this.sub = this.shared.reconnection$.subscribe(list => {
+      this.reconnections = list;
+    });
+
+    // Load from API only if cache empty
+    if (!this.reconnections.length) {
+      try {
+        const res: any = await this.api.get('reconnection-list');
+        if (res?.isSuccessful) {
+          await this.shared.setReconnectionList(res);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }
+
+  ionViewWillLeave() {
+    this.sub.unsubscribe(); // prevent memory leaks
   }
 
 }

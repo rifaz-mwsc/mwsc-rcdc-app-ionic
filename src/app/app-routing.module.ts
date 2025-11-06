@@ -21,6 +21,10 @@ const routes: Routes = [
     path: 'disconnection-detail/:id',
     loadComponent: () => import('./disconnection-detail/disconnection-detail.page').then(m => m.DisconnectionDetailPage)
   },
+      {
+    path: 'reconnection-detail/:id',
+    loadComponent: () => import('./reconnection-detail/reconnection-detail.page').then(m => m.ReconnectionDetailPage)
+  },
   {
     path: '',
     redirectTo: 'login',
@@ -34,9 +38,17 @@ const routes: Routes = [
     path: 'disconnection-detail',
     loadChildren: () => import('./disconnection-detail/disconnection-detail.module').then( m => m.DisconnectionDetailPageModule)
   },
+    {
+    path: 'reconnection-detail',
+    loadChildren: () => import('./reconnection-detail/reconnection-detail.module').then( m => m.ReconnectionDetailPageModule)
+  },
   {
     path: 'tab4',
     loadChildren: () => import('./tab4/tab4.module').then( m => m.Tab4PageModule)
+  },
+  {
+    path: 'reconnection-detail',
+    loadChildren: () => import('./reconnection-detail/reconnection-detail.module').then( m => m.ReconnectionDetailPageModule)
   }
 ];
 @NgModule({
