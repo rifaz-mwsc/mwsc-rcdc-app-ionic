@@ -1,0 +1,19 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+import { IonicModule } from '@ionic/angular';
+
+import { DisconnectionDetailPageRoutingModule } from './disconnection-detail-routing.module';
+
+
+@NgModule({
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonicModule,
+    DisconnectionDetailPageRoutingModule
+  ],
+  declarations: []
+})
+export class DisconnectionDetailPageModule {}

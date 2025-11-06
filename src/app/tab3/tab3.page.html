@@ -12,6 +12,52 @@
       <ion-title size="large">Tab 3</ion-title>
     </ion-toolbar>
   </ion-header>
+<ion-card>
+<ion-card>
+  <ion-card-header>
+    <ion-item lines="none">
+      <!-- User Icon -->
+      <ion-icon slot="start" name="person-circle-outline" size="large"></ion-icon>
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+      <!-- User Info -->
+      <ion-label>
+        <h2>{{ user?.name || 'User Name' }}</h2>
+        <p><strong>User ID:</strong> {{ user?.readerId || 'N/A' }}</p>
+        <p><strong>Employee No:</strong> {{ user?.employeeId || 'N/A' }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-card-header>
+</ion-card>
+
+  <ion-card-content>
+    <ion-list>
+
+  <!-- Meter Readers -->
+  <ion-item button (click)="openMeterReadersModal()">
+    <ion-icon slot="start" name="people-outline" size="large"></ion-icon>
+    <ion-label>Meter Readers</ion-label>
+  </ion-item>
+
+  <!-- Reconnection Assign List -->
+  <ion-item button routerLink="/home">
+    <ion-icon slot="start" name="refresh-circle-outline" size="large"></ion-icon>
+    <ion-label>Reconnection Assign List</ion-label>
+  </ion-item>
+
+  <!-- Settings -->
+  <ion-item button routerLink="/settings">
+    <ion-icon slot="start" name="settings-outline" size="large"></ion-icon>
+    <ion-label>Settings</ion-label>
+  </ion-item>
+
+  <!-- Logout -->
+  <ion-item button (click)="logout()">
+    <ion-icon slot="start" name="log-out-outline" size="large"></ion-icon>
+    <ion-label>Logout</ion-label>
+  </ion-item>
+
+    </ion-list>
+  </ion-card-content>
+</ion-card>
+
 </ion-content>

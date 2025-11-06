@@ -1,10 +1,6 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 1
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+
+<app-header></app-header>
+
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
@@ -13,5 +9,67 @@
     </ion-toolbar>
   </ion-header>
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+ <ion-card>
+  <ion-card-header>
+    <ion-card-title>Hello</ion-card-title>
+    <ion-card-subtitle>{{user?.name}} {{user?.readerId}}</ion-card-subtitle>
+  </ion-card-header>
+
+  <ion-card-content>
+    Here is your task list.
+  </ion-card-content>
+</ion-card>
+
+<ion-card color="light">
+  <ion-card-header>
+    <ion-card-title>Disconnections</ion-card-title>
+    
+  </ion-card-header>
+ <ion-list [inset]="true">
+    <ion-item [button]="true">
+      <ion-icon color="danger" slot="start" name="list-circle" size="large"></ion-icon>
+      <ion-label>All</ion-label>
+      <ion-note slot="end">{{totalDisconnections}}</ion-note>
+    </ion-item>
+    <ion-item [button]="true">
+      <ion-icon color="tertiary" slot="start" name="list-circle" size="large"></ion-icon>
+      <ion-label>Pending</ion-label>
+      <ion-note slot="end">{{totalDisconnections}}</ion-note>
+    </ion-item>
+    <ion-item [button]="true">
+      <ion-icon color="success" slot="start" name="list-circle" size="large"></ion-icon>
+      <ion-label>Completed</ion-label>
+      <ion-note slot="end">{{totalDisconnections}}</ion-note>
+    </ion-item>
+  </ion-list>
+  <ion-card-content *ngIf="totalDisconnections"> {{totalDisconnections}} </ion-card-content>
+</ion-card>
+
+
+<ion-card color="dark">
+  <ion-card-header>
+    <ion-card-title>Reconnections</ion-card-title>
+  </ion-card-header>
+ <ion-list [inset]="true">
+    <ion-item [button]="true">
+      <ion-icon color="danger" slot="start" name="list-circle" size="large"></ion-icon>
+      <ion-label>All</ion-label>
+      <ion-note slot="end">{{totalReconnections}}</ion-note>
+    </ion-item>
+    <ion-item [button]="true">
+      <ion-icon color="tertiary" slot="start" name="list-circle" size="large"></ion-icon>
+      <ion-label>Pending</ion-label>
+      <ion-note slot="end">{{totalReconnections}}</ion-note>
+    </ion-item>
+    <ion-item [button]="true">
+      <ion-icon color="success" slot="start" name="list-circle" size="large"></ion-icon>
+      <ion-label>Completed</ion-label>
+      <ion-note slot="end">{{totalReconnections}}</ion-note>
+    </ion-item>
+  </ion-list>
+</ion-card>
+
 </ion-content>
