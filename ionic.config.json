@@ -1,0 +1,7 @@
+{
+  "name": "mwsc-rcdc",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
